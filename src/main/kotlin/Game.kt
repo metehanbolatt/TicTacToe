@@ -25,7 +25,7 @@ class Game {
             player = Player(name = name, symbol = 'X')
             println("It's your move, $name")
             printBoard()
-        }catch (e: Throwable) {
+        } catch (e: Throwable) {
             println("Invalid Name.")
         }
     }
@@ -37,7 +37,7 @@ class Game {
             val cellNumber = input.toInt()
             require(value = cellNumber in 0..8)
             setCell(cellNumber = cellNumber)
-        }catch (e: Throwable) {
+        } catch (e: Throwable) {
             println("Invalid Number.")
         }
     }
@@ -49,8 +49,8 @@ class Game {
                 index = cellNumber,
                 element = Cell.Filled(player = player)
             )
-            generateComputerMove()
             checkTheBoard()
+            generateComputerMove()
             printBoard()
         } else {
             println("Cell Taken, Choose Another.")
@@ -89,28 +89,28 @@ class Game {
         board.forEachIndexed { index, cell ->
             if (cell.placeHolder == 'X') player1Cells.add(element = index)
             if (cell.placeHolder == 'O') player2Cells.add(element = index)
-            println("YOUR MOVES: $player1Cells")
-            println("COMPUTER MOVES: $player2Cells")
+        }
+        println("YOUR MOVES: $player1Cells")
+        println("COMPUTER MOVES: $player2Cells")
 
-            run CombinationLoop@{
-                winningCombinations.forEach { combination ->
-                    if (player1Cells.containsAll(elements = combination)) {
-                        won()
-                        return@CombinationLoop
-                    }
-                    if (player2Cells.containsAll(elements = combination)) {
-                        lost()
-                        return@CombinationLoop
-                    }
+        run CombinationLoop@{
+            winningCombinations.forEach { combination ->
+                if (player1Cells.containsAll(elements = combination)) {
+                    won()
+                    return@CombinationLoop
+                }
+                if (player2Cells.containsAll(elements = combination)) {
+                    lost()
+                    return@CombinationLoop
                 }
             }
-            if (board.none { it is Cell.Empty } && status is Status.Running) draw()
-            if (status is Status.GameOver) {
-                finish()
-                playAgain()
-            }
-
         }
+        if (board.none { it is Cell.Empty } && status is Status.Running) draw()
+        if (status is Status.GameOver) {
+            finish()
+            playAgain()
+        }
+
     }
 
     private fun finish() {
@@ -169,12 +169,12 @@ data class Player(
 )
 
 sealed class Status {
-    object Idle: Status()
-    object Running: Status()
-    object GameOver: Status()
+    object Idle : Status()
+    object Running : Status()
+    object GameOver : Status()
 }
 
 sealed class Cell(val placeHolder: Char) {
-    object Empty: Cell(placeHolder = '_')
-    data class Filled(val player: Player): Cell(placeHolder = player.symbol)
+    object Empty : Cell(placeHolder = '_')
+    data class Filled(val player: Player) : Cell(placeHolder = player.symbol)
 }
