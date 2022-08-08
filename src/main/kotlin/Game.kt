@@ -10,6 +10,9 @@ class Game {
         println("|    Pick a number from 0-8    |")
         println(" ------------------------------ ")
         getName()
+        while (status is Status.Running) {
+            getCell()
+        }
     }
 
     private fun getName() {
@@ -22,6 +25,31 @@ class Game {
             printBoard()
         }catch (e: Throwable) {
             println("Invalid Name.")
+        }
+    }
+
+    private fun getCell() {
+        val input = readlnOrNull()
+        try {
+            require(value = input != null)
+            val cellNumber = input.toInt()
+            require(value = cellNumber in 0..8)
+            setCell(cellNumber = cellNumber)
+        }catch (e: Throwable) {
+            println("Invalid Number.")
+        }
+    }
+
+    private fun setCell(cellNumber: Int) {
+        val cell = board[cellNumber]
+        if (cell is Cell.Empty) {
+            board.set(
+                index = cellNumber,
+                element = Cell.Filled(player = player)
+            )
+            printBoard()
+        } else {
+            println("Cell Taken, Choose Another.")
         }
     }
 
