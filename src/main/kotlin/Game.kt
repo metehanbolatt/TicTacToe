@@ -50,6 +50,7 @@ class Game {
                 element = Cell.Filled(player = player)
             )
             generateComputerMove()
+            checkTheBoard()
             printBoard()
         } else {
             println("Cell Taken, Choose Another.")
